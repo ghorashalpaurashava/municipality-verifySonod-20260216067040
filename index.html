@@ -247,19 +247,19 @@
 </div>
 
 <script>
-    // ডাটাবেজ যাতে কিউআর কোড স্ক্যান করলে বা সরাসরি লিংক ওপেন করলে অটো তথ্য আসে
+    // সঠিক তথ্যসহ ডাটাবেজ
     const certificatesDatabase = {
         "20260216067040": {
             cert_bn: "২০২৬০২১৬০৬৭০৪০",
             cert_en: "20260216067040",
-            date_bn: "০৭/১১/২০২৬",
-            date_en: "11/7/2026",
-            fiscal_bn: "২০২৬-২০২৭",
-            fiscal_en: "2026-2027",
+            date_bn: "০৯ নভেম্বর, ২০২৬",
+            date_en: "9th November, 2026",
+            fiscal_bn: "২০২৬ - ২০২৭",
+            fiscal_en: "2026 - 2027",
             expire_bn: "অত্র ট্রেড লাইসেন্স এর মেয়াদ ৩০শে জুন ২০২৭ ইং তারিখ পর্যন্ত বলবৎ থাকিবে।",
             expire_en: "Validity of this trade license: 30th June 2027.",
             biz_bn: "মেসার্স বিসমিল্লাহ এন্টারপ্রাইজ",
-            biz_en: "Messers Bismillah Enterprise",
+            biz_en: "M/S BISMILLAH ENTERPRISE",
             name_bn: "মেহেদী হাসান",
             name_en: "MAHEDI HASSAN",
             nid_bn: "৮৬৭৩৯২১৩৪৫",
@@ -268,12 +268,12 @@
             father_en: "Md Ratan Mia",
             mother_bn: "মারজিয়া আক্তার",
             mother_en: "Marjia Akter",
-            address_bn: "গ্রাম: খানেপুর, সারকারখানা-১৬১১, উপজেলা: পলাশ, জেলা: নরসিংদী।",
-            address_en: "Village: Khanepur, Sharkarkhana-1611, Upazila: Palash, District: Narsingdi."
+            address_bn: "গ্রাম: ২০৫ খানেপুর, সারকারখানা-১৬১১, উপজেলা: পলাশ, জেলা: নরসিংদী।",
+            address_en: "Village: 205 Khanepur, Sharkarkhana-1611, Upazila: Palash, District: Narsingdi."
         }
     };
 
-    // পেজ লোড হওয়ার সাথে সাথে লিংক থেকে বা কিউআর কোডের প্যারামিটার থেকে অটোমেটিক সার্চ করার ফাংশন
+    // পেজ লোড হওয়ার সাথে সাথে কিউআর কোড বা লিংক থেকে অটোমেটিক তথ্য দেখানোর ফাংশন
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         let cert = urlParams.get('cert');
