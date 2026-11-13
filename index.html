@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পৌরসভা সনদ যাচাই - ট্রেড লাইসেন্স</title>
+    <style>
+        body {
+            font-family: 'SolaimanLipi', Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 10px;
+            color: #333;
+        }
+        .container {
+            max-width: 750px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .search-box-section {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 25px;
+        }
+        .search-title {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        .search-input-group {
+            display: flex;
+            gap: 10px;
+        }
+        .search-input-group input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+            outline: none;
+        }
+        .search-input-group input:focus {
+            border-color: #28a745;
+        }
+        .search-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .search-btn:hover {
+            background-color: #218838;
+        }
+        #resultContainer {
+            display: none;
+        }
+        .header-top {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .main-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #222;
+        }
+        .sub-title {
+            text-align: center;
+            font-size: 15px;
+            color: #444;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 13.5px;
+        }
+        table, th, td {
+            border: 1px solid #b2b2b2;
+        }
+        th, td {
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        td:nth-child(odd) {
+            background-color: #fafafa;
+            width: 35%;
+        }
+        td:nth-child(even) {
+            width: 15%;
+        }
+        .print-btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .print-btn {
+            background-color: #000;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .print-btn:hover {
+            background-color: #333;
+        }
+        .error-msg {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        @media print {
+            .search-box-section, .print-btn-container, .error-msg {
+                display: none;
+            }
+            #resultContainer {
+                display: block !important;
+            }
+            body {
+                background-color: #fff;
+            }
+            .container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- সার্চ ফর্ম সেকশন -->
+    <div class="search-box-section" id="searchSection">
+        <div class="search-title">সনদ নম্বর দিয়ে যাচাই করুন</div>
+        <div style="font-size: 12px; color: #777; margin-bottom: 10px;">সিস্টেম থেকে প্রদত্ত সনদের তথ্য অনলাইনে যাচাই করতে হবে।</div>
+        <div class="search-input-group">
+            <input type="text" id="certificateNo" placeholder="সনদ নম্বর *">
+            <button class="search-btn" onclick="searchCertificate()">🔍 যাচাই</button>
+        </div>
+        <div id="errorMsg" class="error-msg"></div>
+    </div>
+
+    <!-- ফলাফল বা সনদপত্র সেকশন -->
+    <div id="resultContainer">
+        <div class="header-top">স্মার্ট পৌরসভা ম্যানেজমেন্ট সিস্টেম :</div>
+        <div class="main-title">পৌরসভা সনদ যাচাই</div>
+        <div class="sub-title">অনলাইন যাচাই কপি / Online Verify Copy</div>
+
+        <table>
+            <tr>
+                <td>সনদ নং:</td>
+                <td id="res_cert_bn">-</td>
+                <td>Certificate No</td>
+                <td id="res_cert_en">-</td>
+            </tr>
+            <tr>
+                <td>ইস্যুর তারিখ:</td>
+                <td id="res_date_bn">-</td>
+                <td>Date of Issue</td>
+                <td id="res_date_en">-</td>
+            </tr>
+            <tr>
+                <td>বর্ষবন্ধন:</td>
+                <td id="res_fiscal_bn">-</td>
+                <td>Fiscal Year</td>
+                <td id="res_fiscal_en">-</td>
+            </tr>
+            <tr>
+                <td>মেয়াদ উত্তীর্ণ তারিখ:</td>
+                <td id="res_expire_bn">-</td>
+                <td>Expiration date</td>
+                <td id="res_expire_en">-</td>
+            </tr>
+            <tr>
+                <td>সনদের ধরণ:</td>
+                <td id="res_type_bn">ট্রেড লাইসেন্স</td>
+                <td>Type of certificate</td>
+                <td id="res_type_en">Trade License</td>
+            </tr>
+            <tr>
+                <td>ব্যবসা প্রতিষ্ঠানের নাম:</td>
+                <td id="res_biz_bn">-</td>
+                <td>Business Name</td>
+                <td id="res_biz_en">-</td>
+            </tr>
+            <tr>
+                <td>নাম:</td>
+                <td id="res_name_bn">-</td>
+                <td>Name:</td>
+                <td id="res_name_en">-</td>
+            </tr>
+            <tr>
+                <td>এনআইডি/জন্মনিবন্ধন নম্বর:</td>
+                <td id="res_nid_bn">-</td>
+                <td>NID/Birth Registration No</td>
+                <td id="res_nid_en">-</td>
+            </tr>
+            <tr>
+                <td>পিতা/স্বামীর নাম:</td>
+                <td id="res_father_bn">-</td>
+                <td>Father's/Husband Name:</td>
+                <td id="res_father_en">-</td>
+            </tr>
+            <tr>
+                <td>মাতার নাম:</td>
+                <td id="res_mother_bn">-</td>
+                <td>Mother's Name:</td>
+                <td id="res_mother_en">-</td>
+            </tr>
+            <tr>
+                <td>স্থায়ী ঠিকানা:</td>
+                <td id="res_address_bn">-</td>
+                <td>Permanent Address</td>
+                <td id="res_address_en">-</td>
+            </tr>
+            <tr>
+                <td>সনদ ইস্যুকরণ অফিস:</td>
+                <td>ঘোড়াশাল পৌরসভা</td>
+                <td>Certificate Issuing Office:</td>
+                <td>Ghorashal Municipality</td>
+            </tr>
+        </table>
+
+        <div class="print-btn-container">
+            <button class="print-btn" onclick="window.print()">🖨️ প্রিন্ট করুন</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // সনদের ডাটাবেজ (এখানে একে একে নতুন সনদ নম্বর ও তথ্য যোগ করতে পারবেন)
+    const certificatesDatabase = {
+        "20260216064033": {
+            cert_bn: "২৫২৬০২১৬০৬৪০৩৩",
+            cert_en: "20260216064033",
+            date_bn: "১৬/২/২০২৬",
+            date_en: "2/16/2026",
+            fiscal_bn: "২০২৫-২০২৬,",
+            fiscal_en: "2025-2026,",
+            expire_bn: "অত্র ট্রেড লাইসেন্স এর মেয়াদ ১লা জুলাই ২০২৫ ইং হইতে ৩০শে জুন ২০২৬ ইং তারিখ পর্যন্ত বলবৎ থাকিবে।",
+            expire_en: "Validity of this trade license: 1st July 2025 to 30th June 2026.",
+            biz_bn: "মেমোরি ফ্রেম বি ডি",
+            biz_en: "Memory Frame BD",
+            name_bn: "ইশতিয়াক জাহান মাহিন ভূঁইয়া",
+            name_en: "Istiake Jahan Mahin Bhuyan",
+            nid_bn: "৬৬৬০৩১১১২৯",
+            nid_en: "6660311129",
+            father_bn: "মোঃ পনির ভূঁইয়া",
+            father_en: "Md Ponir Bhuyan",
+            mother_bn: "নাজমা সুলতানা",
+            mother_en: "Nazma Sultana",
+            address_bn: "গ্রাম: দরিহাওলাপাড়া, থানা/উপজেলা: পলাশ, ডাকঘর: চরসিন্দুর-১৬১০, পৌরসভা: ঘোড়াশাল, উপজেলা: পলাশ, জেলা: নরসিংদী।",
+            address_en: "Village : Dariahlapara, Road/Block/Sector : , House/Holding : , Ward No : 06, Post : Char Sindur, Purnasiba : , Upazila : Palash, District : Narsingdi."
+        }
+        // ভবিষ্যতে নতুন সনদ যোগ করতে চাইলে এখানে কমা দিয়ে আরেকটি যুক্ত করে দেবেন
+    };
+
+    // পেজ লোড হওয়ার সাথে সাথে কিউআর কোডের লিংক থেকে নম্বর নিয়ে অটোমেটিক ফলাফল শো করার ফাংশন
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        let cert = urlParams.get('cert');
+
+        if (!cert) {
+            const pathSegments = window.location.pathname.split('/');
+            const lastSegment = pathSegments[pathSegments.length - 1];
+            if (certificatesDatabase[lastSegment]) {
+                cert = lastSegment;
+            }
+        }
+
+        if (cert && certificatesDatabase[cert]) {
+            document.getElementById('certificateNo').value = cert;
+            searchCertificate(); // লিংকে আসার সাথে সাথেই অটোমেটিক সার্চ হয়ে ফলাফল দেখাবে
+        }
+    };
+
+    function searchCertificate() {
+        const inputVal = document.getElementById('certificateNo').value.trim();
+        const errorDiv = document.getElementById('errorMsg');
+        const resultDiv = document.getElementById('resultContainer');
+
+        if (certificatesDatabase[inputVal]) {
+            const data = certificatesDatabase[inputVal];
+            
+            document.getElementById('res_cert_bn').innerText = data.cert_bn;
+            document.getElementById('res_cert_en').innerText = data.cert_en;
+            document.getElementById('res_date_bn').innerText = data.date_bn;
+            document.getElementById('res_date_en').innerText = data.date_en;
+            document.getElementById('res_fiscal_bn').innerText = data.fiscal_bn;
+            document.getElementById('res_fiscal_en').innerText = data.fiscal_en;
+            document.getElementById('res_expire_bn').innerText = data.expire_bn;
+            document.getElementById('res_expire_en').innerText = data.expire_en;
+            document.getElementById('res_biz_bn').innerText = data.biz_bn;
+            document.getElementById('res_biz_en').innerText = data.biz_en;
+            document.getElementById('res_name_bn').innerText = data.name_bn;
+            document.getElementById('res_name_en').innerText = data.name_en;
+            document.getElementById('res_nid_bn').innerText = data.nid_bn;
+            document.getElementById('res_nid_en').innerText = data.nid_en;
+            document.getElementById('res_father_bn').innerText = data.father_bn;
+            document.getElementById('res_father_en').innerText = data.father_en;
+            document.getElementById('res_mother_bn').innerText = data.mother_bn;
+            document.getElementById('res_mother_en').innerText = data.mother_en;
+            document.getElementById('res_address_bn').innerText = data.address_bn;
+            document.getElementById('res_address_en').innerText = data.address_en;
+
+            errorDiv.innerText = '';
+            resultDiv.style.display = 'block';
+        } else {
+            errorDiv.innerText = 'সঠিক বা নিবন্ধিত সনদ নম্বর প্রদান করুন। এই নম্বরের কোনো তথ্য পাওয়া যায়নি।';
+            resultDiv.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
