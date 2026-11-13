@@ -179,7 +179,7 @@
                 <td id="res_date_en">-</td>
             </tr>
             <tr>
-                <td>বর্ষবন্ধন:</td>
+                <td>অর্থবছর:</td>
                 <td id="res_fiscal_bn">-</td>
                 <td>Fiscal Year</td>
                 <td id="res_fiscal_en">-</td>
@@ -247,31 +247,30 @@
 </div>
 
 <script>
-    // সনদের ডাটাবেজ (এখানে একে একে নতুন সনদ নম্বর ও তথ্য যোগ করতে পারবেন)
+    // নতুন সনদ নম্বর ও এনআইডি তথ্য সম্বলিত ডাটাবেজ
     const certificatesDatabase = {
-        "20260216064033": {
-            cert_bn: "২৫২৬০২১৬০৬৪০৩৩",
-            cert_en: "20260216064033",
-            date_bn: "১৬/২/২০২৬",
-            date_en: "2/16/2026",
-            fiscal_bn: "২০২৫-২০২৬,",
-            fiscal_en: "2025-2026,",
-            expire_bn: "অত্র ট্রেড লাইসেন্স এর মেয়াদ ১লা জুলাই ২০২৫ ইং হইতে ৩০শে জুন ২০২৬ ইং তারিখ পর্যন্ত বলবৎ থাকিবে।",
-            expire_en: "Validity of this trade license: 1st July 2025 to 30th June 2026.",
-            biz_bn: "মেমোরি ফ্রেম বি ডি",
-            biz_en: "Memory Frame BD",
-            name_bn: "ইশতিয়াক জাহান মাহিন ভূঁইয়া",
-            name_en: "Istiake Jahan Mahin Bhuyan",
-            nid_bn: "৬৬৬০৩১১১২৯",
-            nid_en: "6660311129",
-            father_bn: "মোঃ পনির ভূঁইয়া",
-            father_en: "Md Ponir Bhuyan",
-            mother_bn: "নাজমা সুলতানা",
-            mother_en: "Nazma Sultana",
-            address_bn: "গ্রাম: দরিহাওলাপাড়া, থানা/উপজেলা: পলাশ, ডাকঘর: চরসিন্দুর-১৬১০, পৌরসভা: ঘোড়াশাল, উপজেলা: পলাশ, জেলা: নরসিংদী।",
-            address_en: "Village : Dariahlapara, Road/Block/Sector : , House/Holding : , Ward No : 06, Post : Char Sindur, Purnasiba : , Upazila : Palash, District : Narsingdi."
+        "20260216067040": {
+            cert_bn: "২০২৬০২১৬০৬৭০৪০",
+            cert_en: "20260216067040",
+            date_bn: "০৭/১১/২০২৬",
+            date_en: "11/7/2026",
+            fiscal_bn: "২০২৬-২০২৭",
+            fiscal_en: "2026-2027",
+            expire_bn: "অত্র ট্রেড লাইসেন্স এর মেয়াদ ৩০শে জুন ২০২৭ ইং তারিখ পর্যন্ত বলবৎ থাকিবে।",
+            expire_en: "Validity of this trade license: 30th June 2027.",
+            biz_bn: "মেসার্স বিসমিল্লাহ এন্টারপ্রাইজ",
+            biz_en: "Messers Bismillah Enterprise",
+            name_bn: "মেহেদী হাসান",
+            name_en: "MAHEDI HASSAN",
+            nid_bn: "৮৬৭৩৯২১৩৪৫",
+            nid_en: "8673921345",
+            father_bn: "মোঃ রতন মিয়া",
+            father_en: "Md Ratan Mia",
+            mother_bn: "মারজিয়া আক্তার",
+            mother_en: "Marjia Akter",
+            address_bn: "গ্রাম: খানেপুর, সারকারখানা-১৬১১, উপজেলা: পলাশ, জেলা: নরসিংদী।",
+            address_en: "Village: Khanepur, Sharkarkhana-1611, Upazila: Palash, District: Narsingdi."
         }
-        // ভবিষ্যতে নতুন সনদ যোগ করতে চাইলে এখানে কমা দিয়ে আরেকটি যুক্ত করে দেবেন
     };
 
     // পেজ লোড হওয়ার সাথে সাথে কিউআর কোডের লিংক থেকে নম্বর নিয়ে অটোমেটিক ফলাফল শো করার ফাংশন
@@ -289,7 +288,7 @@
 
         if (cert && certificatesDatabase[cert]) {
             document.getElementById('certificateNo').value = cert;
-            searchCertificate(); // লিংকে আসার সাথে সাথেই অটোমেটিক সার্চ হয়ে ফলাফল দেখাবে
+            searchCertificate(); 
         }
     };
 
